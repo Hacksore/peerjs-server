@@ -11,7 +11,7 @@ type Optional<T> = {
 };
 
 function ExpressPeerServer(server: Server, options?: IConfig) {
-  const app = express();
+  const app: any = express();
 
   const newOptions: IConfig = {
     ...defaultConfig,
@@ -21,14 +21,23 @@ function ExpressPeerServer(server: Server, options?: IConfig) {
   if (newOptions.proxied) {
     app.set("trust proxy", newOptions.proxied === "false" ? false : !!newOptions.proxied);
   }
-
+  
   app.on("mount", () => {
     if (!server) {
       throw new Error("Server is not passed to constructor - " +
         "can't start PeerServer");
     }
 
-    createInstance({ app, server, options: newOptions });
+    const realm  = createInstance({ app, server, options: newOptions });
+    app.realm = realm;
+
+    // inject id as middleware
+    app.use((req: any, _: any, next: any) => {
+      const id = realm.generateClientId(newOptions.generateClientId);
+      req.userId = id;
+      next();
+    });
+
   });
 
   return app;

@@ -16,7 +16,7 @@ export const createInstance = ({ app, server, options }: {
   app: express.Application;
   server: Server;
   options: IConfig;
-}): void => {
+}): IRealm => {
   const config = options;
   const realm: IRealm = new Realm();
   const messageHandler = new MessageHandler(realm);
@@ -72,4 +72,6 @@ export const createInstance = ({ app, server, options }: {
 
   messagesExpire.startMessagesExpiration();
   checkBrokenConnections.start();
+
+  return realm;
 };

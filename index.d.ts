@@ -58,6 +58,7 @@ declare interface IMessage {
 }
 
 declare interface CustomExpress extends Express.Express {
+  realm: any;
   on(event: string, callback: (...args: any[]) => void): this;
   on(event: 'connection', callback: (client: IClient) => void): this;
   on(event: 'disconnect', callback: (client: IClient) => void): this;

@@ -17,7 +17,6 @@ export const Api = ({ config, realm, messageHandler }: {
   const authMiddleware = new AuthMiddleware(config, realm);
 
   const app = express.Router();
-
   const jsonParser = bodyParser.json();
 
   app.use(cors());

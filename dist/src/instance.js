@@ -55,5 +55,6 @@ const createInstance = ({ app, server, options }) => {
     });
     messagesExpire.startMessagesExpiration();
     checkBrokenConnections.start();
+    return realm;
 };
 exports.createInstance = createInstance;

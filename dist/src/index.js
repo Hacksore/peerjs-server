@@ -31,7 +31,14 @@ function ExpressPeerServer(server, options) {
             throw new Error("Server is not passed to constructor - " +
                 "can't start PeerServer");
         }
-        instance_1.createInstance({ app, server, options: newOptions });
+        const realm = instance_1.createInstance({ app, server, options: newOptions });
+        app.realm = realm;
+        // inject id as middleware
+        app.use((req, _, next) => {
+            const id = realm.generateClientId(newOptions.generateClientId);
+            req.userId = id;
+            next();
+        });
     });
     return app;
 }
