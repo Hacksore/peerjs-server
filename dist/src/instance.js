@@ -41,6 +41,11 @@ const createInstance = ({ app, server, options }) => {
             }
             realm.clearMessageQueue(client.getId());
         }
+        // inject id as middleware for the REST api
+        app.use((req, _, next) => {
+            req.userId = client.getId();
+            next();
+        });
         app.emit("connection", client);
     });
     wss.on("message", (client, message) => {

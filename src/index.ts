@@ -31,13 +31,6 @@ function ExpressPeerServer(server: Server, options?: IConfig) {
     const realm  = createInstance({ app, server, options: newOptions });
     app.realm = realm;
 
-    // inject id as middleware
-    app.use((req: any, _: any, next: any) => {
-      const id = realm.generateClientId(newOptions.generateClientId);
-      req.userId = id;
-      next();
-    });
-
   });
 
   return app;

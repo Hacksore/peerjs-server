@@ -54,6 +54,12 @@ export const createInstance = ({ app, server, options }: {
       realm.clearMessageQueue(client.getId());
     }
 
+    // inject id as middleware for the REST api
+    app.use((req: any, _: any, next: any) => {
+      req.userId = client.getId()
+      next();
+    });
+
     app.emit("connection", client);
   });
 
